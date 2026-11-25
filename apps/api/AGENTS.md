@@ -6,6 +6,8 @@ Hono API running on Bun. Part of the Bun workspace monorepo (`apps/*`).
 
 - `bun dev` (from repo root) or `bun --watch src/index.ts` (here) — dev server on port 3000
 - `bun run typecheck` (from repo root) — runs `tsc --noEmit` in all workspaces
+- `bun run db:push` (here) — syncs the drizzle schema to `local.db`
+- `bun src/db/seed.ts` (here) — reseeds the `products` table (wipes then inserts)
 
 ## Structure
 
@@ -13,6 +15,12 @@ Hono API running on Bun. Part of the Bun workspace monorepo (`apps/*`).
 - `src/routes/` — Hono sub-apps mounted via `.route()` (e.g. `/auth`). Sub-apps must
   also use chained registration so their routes appear in `AppType`.
 - `src/index.ts` — entry point only; wires `app.fetch` into Bun's default-export server shape.
+- `src/db/` — drizzle ORM over SQLite/libsql (`drizzle-orm/libsql`), database file `local.db`.
+  - `index.ts` — the `db` client (default export).
+  - `schema.ts` — table definitions and inferred types (`Product`, `NewProduct`). Config
+    lives in `drizzle.config.ts` and points here; prices are integers in Toman.
+  - `seed.ts` — standalone seed script (`bun src/db/seed.ts`); wipe-and-reinsert, so it's
+    safe to rerun.
 - `src/lib/logger.ts` — shared pino logger (JSON). Level via `LOG_LEVEL`.
 - `src/middleware/` — Hono middleware built with `createMiddleware`. `requireAdmin`
   (`@/middleware/auth`) verifies the admin session cookie and exposes `adminPhone`.
