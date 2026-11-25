@@ -1,6 +1,4 @@
-import { Hono } from "hono";
-
-const app = new Hono();
+import app from "./app";
 
 export default {
   fetch: app.fetch,
