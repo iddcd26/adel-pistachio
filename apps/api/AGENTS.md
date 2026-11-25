@@ -26,6 +26,9 @@ Hono API running on Bun. Part of the Bun workspace monorepo (`apps/*`).
   (`@/middleware/auth`) verifies the admin session cookie and exposes `adminPhone`.
 - `src/routes/auth.ts` — admin login (`POST /admin/login`). Verifies `phone`/`password`
   with exact match against env, issues a signed JWT as an HttpOnly cookie.
+- `src/routes/products.ts`: public reads (`GET /products`, `GET /products/:id`) and an
+  admin only `PATCH /products/:id` (partial `price`/`inStock`; names are not updatable).
+  Product names are fixed catalog entries.
 
 ## Environment
 
@@ -46,4 +49,7 @@ Hono API running on Bun. Part of the Bun workspace monorepo (`apps/*`).
   from the middleware — don't log requests manually in handlers. Set level via `LOG_LEVEL`.
 - Client-facing error messages are in Persian (e.g. `"شماره موبایل یا رمز عبور نادرست
 است."`); internal errors like `onError` are in English (`"Internal server error"`).
+- Validators use `validator(...)` with zod. Failures return
+  `400 { error: "ورودی‌های خود را کنترل کنید.", issues }`, and each zod rule carries
+  its own Persian message via the v4 `{ error: "..." }` / string message form.
 - The admin session JWT is verified statelessly; sessions carry `{ sub: phone, role: "admin", exp }`.

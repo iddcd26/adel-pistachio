@@ -2,6 +2,7 @@ import { Hono } from "hono";
 
 import { logger } from "@/lib/logger";
 import authRoutes from "@/routes/auth";
+import productsRoutes from "@/routes/products";
 
 const app = new Hono()
   .use("*", async (c, next) => {
@@ -22,6 +23,7 @@ const app = new Hono()
   })
   .get("/", (c) => c.json({ status: "ok" }))
   .route("/auth", authRoutes)
+  .route("/products", productsRoutes)
   .notFound((c) => c.json({ error: "Not found" }, 404))
   .onError((err, c) => {
     logger.error({ err }, "unhandled error");
