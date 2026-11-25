@@ -11,6 +11,7 @@ Hono API running on Bun. Part of the Bun workspace monorepo (`apps/*`).
 
 - `src/app.ts` — the Hono app: routes, middleware, error handling. No server concerns.
 - `src/index.ts` — entry point only; wires `app.fetch` into Bun's default-export server shape.
+- `src/lib/logger.ts` — shared pino logger (JSON). Level via `LOG_LEVEL`.
 
 ## Conventions
 
@@ -19,3 +20,5 @@ Hono API running on Bun. Part of the Bun workspace monorepo (`apps/*`).
 - Keep `export type AppType = typeof app` in `app.ts` in sync — clients use it via
   `hc<AppType>()`.
 - Import app-internal modules with the `@/*` alias (`@/app`), which maps to `src/*`.
+- Log with the shared `logger` from `@/lib/logger` (pino, JSON). Request lines come
+  from the middleware — don't log requests manually in handlers. Set level via `LOG_LEVEL`.
