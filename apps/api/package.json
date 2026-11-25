@@ -1,0 +1,11 @@
+{
+  "name": "@adel-pistachio/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch src/index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.13.22"
+  }
+}
